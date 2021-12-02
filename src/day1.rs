@@ -1,5 +1,4 @@
 use std::iter::Iterator;
-use std::convert::TryInto;
 
 #[aoc(day1, part1)]
 pub fn part1(input: &str) -> usize {
