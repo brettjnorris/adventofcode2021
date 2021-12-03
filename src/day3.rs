@@ -1,22 +1,5 @@
 use std::iter::{Iterator, FromIterator};
 
-// #[aoc_generator(day3)]
-// pub fn input_generator(input: &str) -> Vec<String> {
-//     input
-//         .lines().collect().clone()
-// }
-
-// pub fn generate_bitmask(position: u8) -> u8 {
-//     let bit_string = ""
-//     for i in 0..=5 {
-//         if i == position {
-//
-//         }
-//     }
-//
-//     u8::from_str_radix(bit_string, 2).unwrap()
-// }
-
 pub fn compute_significant_bitmap(input: &Vec<Vec<char>>, most: bool) -> u16 {
     let mut bit_string: Vec<char> = Vec::new();
     let length = input[0].len();
