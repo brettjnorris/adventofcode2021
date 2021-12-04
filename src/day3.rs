@@ -94,8 +94,6 @@ pub fn part2(input: &str) ->  u32 {
     let oxygen_rating = chars_to_int(&filter_by_common(&values, 0, true)[0]);
     let co2_rating = chars_to_int(&filter_by_common(&values, 0, false)[0]);
 
-    println!("oxygen_rating: {:?}, co2_rating: {:?}", oxygen_rating, co2_rating);
-
     oxygen_rating * co2_rating
 }
 
