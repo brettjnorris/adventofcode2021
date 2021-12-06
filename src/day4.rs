@@ -6,11 +6,29 @@ type ProblemInput = (Vec<u64>, Vec<Board>);
 #[derive(Clone)]
 pub struct Board {
     id: u64,
-    squares: Vec<u64>
+    squares: Vec<u64>,
+    groups: Vec<HashSet<u64>>
 }
 
 impl Board {
-    fn groups(&self) -> Vec<HashSet<u64>> {
+    fn from_str(id: u64, input: &str) -> Board {
+        let input_str = input
+            .trim()
+            .replace("\n", " ");
+
+        let squares = input_str
+            .split_whitespace()
+            .map(|n| {
+                n.trim().parse::<u64>().unwrap()
+            })
+            .collect::<Vec<u64>>();
+
+        let parsed_groups =  Board::parse_groups(&squares);
+
+        Board { id, squares, groups: parsed_groups }
+    }
+
+    fn parse_groups(squares: &Vec<u64>) -> Vec<HashSet<u64>> {
         let mut groups: Vec<HashSet<u64>> = vec![];
 
         for i in 0..5 {
@@ -20,8 +38,8 @@ impl Board {
             for j in 0..5 {
                 let column_index: usize = (i * 5) + j;
                 let row_index: usize = i + (j * 5);
-                column.insert(self.squares[column_index]);
-                row.insert(self.squares[row_index]);
+                column.insert(squares[column_index]);
+                row.insert(squares[row_index]);
             }
 
             groups.push(column);
@@ -32,7 +50,7 @@ impl Board {
     }
 
     fn check_solution(&self, marked: &HashSet<u64>) -> bool {
-        self.groups().iter().any(|group| {
+        self.groups.iter().any(|group| {
             group.intersection(&marked).collect::<Vec<&u64>>().len() == 5
         })
     }
@@ -59,7 +77,7 @@ pub fn input_generator(input: &str) -> ProblemInput {
         .into_iter()
         .enumerate()
         .map(|(i, board_string)| {
-            parse_board(i as u64, board_string)
+           Board::from_str(i as u64, board_string)
         })
         .collect::<Vec<Board>>();
 
@@ -74,20 +92,7 @@ pub fn parse_moves(moves: &str) -> Vec<u64> {
         }).collect::<Vec<u64>>()
 }
 
-pub fn parse_board(id: u64, input: &str) -> Board {
-    let input_str = input
-        .trim()
-        .replace("\n", " ");
 
-    let squares = input_str
-        .split_whitespace()
-        .map(|n| {
-            n.trim().parse::<u64>().unwrap()
-        })
-        .collect::<Vec<u64>>();
-
-    Board { id, squares }
-}
 
 
 #[aoc(day4, part1)]
@@ -129,7 +134,6 @@ pub fn part2(input: &ProblemInput)  -> u64 {
                     score = board.score(&marked) * i;
                     break 'outer;
                 } else {
-                    // boards.remove(position);
                     solved_board_ids.push(board.id);
                 }
             }
