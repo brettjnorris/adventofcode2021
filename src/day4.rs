@@ -209,29 +209,21 @@ mod tests {
     fn test_parse_board() {
         let input = "            22 13 17 11  0\n             8  2 23  4 24\n            21  9 14 16  7\n             6 10  3 18  5\n             1 12 20 15 19";
 
-        let board = parse_board(1, input);
+        let board = Board::from_str(1, input);
         assert_eq!(board.squares, vec![22, 13, 17, 11, 0, 8, 2, 23, 4, 24, 21, 9, 14, 16, 7, 6, 10, 3, 18, 5, 1, 12, 20, 15, 19])
     }
 
     #[test]
     fn test_board_groups() {
-        let board = Board {
-            id: 1,
-            squares: vec![22, 13, 17, 11, 0, 8, 2, 23, 4, 24, 21, 9, 14, 16, 7, 6, 10, 3, 18, 5, 1, 12, 20, 15, 19]
-        };
+        let board = Board::from_str(1, "            22 13 17 11  0\n             8  2 23  4 24\n            21  9 14 16  7\n             6 10  3 18  5\n             1 12 20 15 19");
 
-        let groups = board.groups();
-        println!("{:?}", groups);
-        assert_eq!(board.groups().len(), 10)
+        assert_eq!(board.groups.len(), 10)
     }
 
     #[test]
     fn test_board_check_solution() {
         let marked: HashSet<u64> = HashSet::from_iter(vec![22, 13, 17, 11, 0]);
-        let board = Board {
-            id: 1,
-            squares: vec![22, 13, 17, 11, 0, 8, 2, 23, 4, 24, 21, 9, 14, 16, 7, 6, 10, 3, 18, 5, 1, 12, 20, 15, 19]
-        };
+        let board = Board::from_str(1, "            22 13 17 11  0\n             8  2 23  4 24\n            21  9 14 16  7\n             6 10  3 18  5\n             1 12 20 15 19");
 
         assert_eq!(board.check_solution(&marked), true)
 
@@ -240,10 +232,7 @@ mod tests {
     #[test]
     fn test_board_score() {
         let marked: HashSet<u64> = HashSet::from_iter(vec![22, 13, 17, 11, 0, 8, 2, 23, 4, 24, 21, 9, 14, 16, 7, 6, 10, 3, 18, 5, 1, 12]);
-        let board = Board {
-            id: 1,
-            squares: vec![22, 13, 17, 11, 0, 8, 2, 23, 4, 24, 21, 9, 14, 16, 7, 6, 10, 3, 18, 5, 1, 12, 20, 15, 19]
-        };
+        let board = Board::from_str(1, "            22 13 17 11  0\n             8  2 23  4 24\n            21  9 14 16  7\n             6 10  3 18  5\n             1 12 20 15 19");
 
         assert_eq!(board.score(&marked), 54)
     }
